@@ -10,7 +10,7 @@ from local import LocalCache
 
 print(os.environ["PINECONE_API_KEY"])
 
-codebase_memory = LocalCache("CodebaseMemory")
+#codebase_memory = LocalCache("CodebaseMemory")
 all_codebase_signatures = {} # {filename: [signature1, signature2, ...], ...}
 all_pinecone_memory = LocalCache("ActionsMemory")
 all_memory = []
@@ -20,7 +20,7 @@ GOAL:
 {goal}.
 
 CONSTRAINTS:
-You are on a fresh install of Arch linux, with only command line access.
+You are on a fresh install of Windows, with only command line (CMD) access.
 Final product must have thorough test coverage.
 
 TASK LIST FORMAT:
@@ -39,7 +39,7 @@ CURRENT TASK LIST:
 {task_list}
 
 CONSTRAINTS:
-You are on a fresh install of Arch linux, with only command line access.
+You are on a fresh install of Windows, with only command line (CMD) access.
 Final product must have thorough test coverage.
 
 CURRENT TASK: Task {task_number}.
@@ -155,7 +155,8 @@ Using the above goal, code snippets and advice, execute the terminal commands ne
 {subtask_string}
 
 Write the next command, followed by a new line and "EXECUTENOW".
-You will then be prompted with the command's output, after which you can either execute another command, mark the task as completed by running "END", or mark the task as failed by running "FAIL".
+You will then be prompted with the command's output, after which you can either execute another command, mark the task as completed by running "SUCCESS", or mark the task as failed by running "FAIL".
+Make sure to run "FAIL" if you have tried something several times and it still doesn't work.
 
 COMMAND:
 """
@@ -168,7 +169,9 @@ max_tokens = 4096
         
 def subtasks_to_string(subtasks):
     return '\n'.join([f"Subtask {i + 1}. {subtask}: {subtask_description}" for i, (subtask, subtask_description) in enumerate(subtasks)])
-
+def run(cmd):
+    completed = subprocess.run(["powershell", "-Command", cmd], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    return completed
 
 def main(main_goal="Write a 2d raytracer in C++, with shadows, reflections and refractions.", verbose=True):
     main_goal = main_goal.strip('.')
@@ -278,9 +281,10 @@ def main(main_goal="Write a 2d raytracer in C++, with shadows, reflections and r
                     file_functions = re.findall(py_function_regex, file_code)
                     file_classes = re.findall(py_class_regex, file_code)
                     file_name = files_to_write[i]
-                    all_codebase_signatures[file_name] = file_functions + file_classes
+                    
                     with open(file_name, 'w') as f:
                         f.write(file_code.split('Code: \n')[1].strip())
+                    all_codebase_signatures[file_name] = file_functions + file_classes
                     new_memory_string = f"I wrote these functions and classes in {file_name}:" + ', '.join(file_functions) + '; ' + ', '.join(file_classes)
                     all_memory.append(new_memory_string)
                     all_pinecone_memory.add(new_memory_string)
@@ -299,7 +303,7 @@ def main(main_goal="Write a 2d raytracer in C++, with shadows, reflections and r
                 while True:
                     terminal_command = model_interaction.model_call(terminal_command_prompt, model=model, temperature=0.7, max_tokens=400,
                                                                     stop=['EXECUTENOW'])
-                    if terminal_command.strip() == 'END':
+                    if terminal_command.strip() == 'SUCCESS':
                         command_result = True
                         break
                     if terminal_command.strip() == 'FAIL':
@@ -307,13 +311,15 @@ def main(main_goal="Write a 2d raytracer in C++, with shadows, reflections and r
                         break
                     print("TERMINAL COMMAND:")
                     print(terminal_command)
-                    command_output = subprocess.run(terminal_command, shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')
-                    os.system(terminal_command)
+                    #command_output = subprocess.run(terminal_command, shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')
+                    command_output = run(terminal_command)
+                    print("COMMAND OUTPUT:")
+                    print(command_output)
                     new_memory_string = f"I ran this terminal command: {terminal_command} and got this output: {command_output}"
                     all_memory.append(new_memory_string)
                     all_pinecone_memory.add(new_memory_string)
                     terminal_command_prompt = terminal_command_prompt + f"{terminal_command}\nEXECUTENOW\n\nCommand output:\n{command_output}\n\nCOMMAND:\n"
-                if not command_result:
+                if command_result == False:
                     quit()
                 subtasks = subtasks[1:]
                 continue
