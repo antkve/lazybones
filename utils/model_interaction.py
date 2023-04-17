@@ -2,6 +2,9 @@ import openai
 import subprocess
 import time
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
@@ -11,6 +14,40 @@ def get_ada_embedding(text):
         "data"
     ][0]["embedding"]
 
+def edit_call(
+    input_text: str,
+    prompt: str,
+    model: str = "text-davinci-edit-001",
+    temperature: float = 0.5,
+    max_tokens: int = None,
+    verbose: bool = False,
+    model_name_for_verbose: str = None,
+):
+    if verbose:
+        print(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} MODEL =====================")
+        print(input_text)
+        print(prompt)
+        print("===================================================================================================")
+    while True:
+        try:
+            response = openai.Edit.create(
+            model=model,
+            input = input_text,
+            instruction=prompt,
+            temperature = temperature,
+            max_tokens = max_tokens,
+            )
+            res = response.choices[0].text.strip()
+        except openai.error.RateLimitError:
+            print(
+                "The OpenAI API rate limit has been exceeded. Waiting 10 seconds and trying again."
+            )
+            time.sleep(10)
+        else:
+            print(f"-------------------- CONTEXT RETURNED FROM {model_name_for_verbose.upper()} MODEL ----------------------")
+            print(res)
+            print("---------------------------------------------------------------------------------------------------------")
+            return res
 
 def model_call(
     prompt: str,
@@ -18,6 +55,7 @@ def model_call(
     temperature: float = 0.5,
     max_tokens: int = None,
     stop = None,
+    suffix: str = None,
     verbose: bool = False,
     model_name_for_verbose: str = None,
 ):
@@ -42,6 +80,7 @@ def model_call(
                     top_p=1,
                     frequency_penalty=0,
                     presence_penalty=0,
+                    suffix = suffix,
                     stop=stop,
                 )
                 res = response.choices[0].text.strip()
@@ -53,6 +92,7 @@ def model_call(
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
+                    suffix=suffix,
                     n=1,
                     stop=None,
                 )
