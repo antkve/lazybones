@@ -1,5 +1,5 @@
-import browsing
-import file_operations
+from . import file_operations
+from tools.browsing import google_search
 
 TOOL_LLM_MODEL = "gpt-3.5-turbo" # Model used in tools, such as for web page summaries.
 
@@ -35,7 +35,7 @@ DEV_TOOLS = {
 
     'google_search': {
         'readable': 'Google search',
-        'function': browsing.google_search,
+        'function': google_search,
         'args': [('input', '<string to search>')]},
 }
 

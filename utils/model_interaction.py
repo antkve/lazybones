@@ -19,18 +19,19 @@ def model_call(
     max_tokens: int = None,
     stop = None,
     verbose: bool = False,
+    model_name_for_verbose: str = None,
 ):
     if verbose:
-        print("===================== CONTEXT SEND TO MODEL =====================")
-        print({prompt})
-        print("=================================================================")
+        print(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} MODEL =====================")
+        print(prompt)
+        print("===================================================================================================")
     while True:
         try:
             if model.startswith("llama"):
                 # Spawn a subprocess to run llama.cpp
                 cmd = ["llama/main", "-p", prompt]
                 result = subprocess.run(cmd, shell=True, stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, text=True)
-                return result.stdout.strip()
+                res = result.stdout.strip()
             elif not model.startswith("gpt-"):
                 # Use completion API
                 response = openai.Completion.create(
@@ -43,7 +44,7 @@ def model_call(
                     presence_penalty=0,
                     stop=stop,
                 )
-                return response.choices[0].text.strip()
+                res = response.choices[0].text.strip()
             else:
                 # Use chat completion API
                 messages = [{"role": "system", "content": prompt}]
@@ -55,11 +56,16 @@ def model_call(
                     n=1,
                     stop=None,
                 )
-                return response.choices[0].message.content.strip()
+                res = response.choices[0].message.content.strip()
         except openai.error.RateLimitError:
             print(
                 "The OpenAI API rate limit has been exceeded. Waiting 10 seconds and trying again."
             )
             time.sleep(10)  # Wait 10 seconds and try again
         else:
-            break
+        
+            print(f"-------------------- CONTEXT RETURNED FROM {model_name_for_verbose.upper()} MODEL ----------------------")
+            print(res)
+            print("---------------------------------------------------------------------------------------------------------")
+            return res
+    

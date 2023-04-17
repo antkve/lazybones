@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from time import sleep
 from unicodedata import normalize
+from duckduckgo_search import ddg
 
 from click import progressbar
 
@@ -18,10 +19,11 @@ import re
 import shutil
 from datetime import datetime
 from time import sleep
-from ..utils import ddg
+from duckduckgo_search import ddg
 import requests
 from bs4 import BeautifulSoup
-from . import TOOL_LLM_MODEL
+
+TOOL_LLM_MODEL = "gpt-3.5-turbo"
 
 import requests
 import openai
