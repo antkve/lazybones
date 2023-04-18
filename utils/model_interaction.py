@@ -3,6 +3,8 @@ import subprocess
 import time
 import os
 import dotenv
+import argparse
+
 
 dotenv.load_dotenv()
 
@@ -19,12 +21,11 @@ def edit_call(
     prompt: str,
     model: str = "text-davinci-edit-001",
     temperature: float = 0.5,
-    max_tokens: int = None,
     verbose: bool = False,
     model_name_for_verbose: str = None,
 ):
     if verbose:
-        print(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} MODEL =====================")
+        print(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} AGENT =====================")
         print(input_text)
         print(prompt)
         print("===================================================================================================")
@@ -35,7 +36,6 @@ def edit_call(
             input = input_text,
             instruction=prompt,
             temperature = temperature,
-            max_tokens = max_tokens,
             )
             res = response.choices[0].text.strip()
         except openai.error.RateLimitError:
@@ -44,10 +44,18 @@ def edit_call(
             )
             time.sleep(10)
         else:
-            print(f"-------------------- CONTEXT RETURNED FROM {model_name_for_verbose.upper()} MODEL ----------------------")
+            print(f"-------------------- CONTEXT RETURNED FROM {model_name_for_verbose.upper()} AGENT ----------------------")
             print(res)
             print("---------------------------------------------------------------------------------------------------------")
             return res
+
+def log(message):
+    with open("log.txt", "a", encoding='utf-8') as f:
+        f.write(message + '\n')
+
+def printlog(message):
+    print(message)
+    log(message)
 
 def model_call(
     prompt: str,
@@ -56,13 +64,19 @@ def model_call(
     max_tokens: int = None,
     stop = None,
     suffix: str = None,
-    verbose: bool = False,
+    verbose: bool = True,
+    quiet: bool = False,
     model_name_for_verbose: str = None,
+
 ):
     if verbose:
-        print(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} MODEL =====================")
-        print(prompt)
-        print("===================================================================================================")
+        printlog(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} AGENT =====================")
+        printlog(prompt)
+        printlog("===================================================================================================")
+    else:
+        log(f"===================== CONTEXT SENT TO {model_name_for_verbose.upper()} AGENT =====================")
+        log(prompt)
+        log("===================================================================================================")
     while True:
         try:
             if model.startswith("llama"):
@@ -102,9 +116,13 @@ def model_call(
             )
             time.sleep(10)  # Wait 10 seconds and try again
         else:
-        
-            print(f"-------------------- CONTEXT RETURNED FROM {model_name_for_verbose.upper()} MODEL ----------------------")
-            print(res)
-            print("---------------------------------------------------------------------------------------------------------")
+            if not quiet:
+                printlog(f"------------------------ CONTEXT RETURNED FROM {model_name_for_verbose.upper()} AGENT --------------------------")
+                printlog(res)
+                printlog("---------------------------------------------------------------------------------------------------------")
+            else:
+                log(f"------------------------ CONTEXT RETURNED FROM {model_name_for_verbose.upper()} AGENT --------------------------")
+                log(res)
+                log("---------------------------------------------------------------------------------------------------------")
             return res
     

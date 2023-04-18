@@ -32,9 +32,9 @@ USER_AGENT_HEADER = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_
 
 def browse_website(url, question):
     text = scrape_text(url)
-    links = scrape_links(url)
+    # links = scrape_links(url)
     summary = summarize_text(text, question)
-    return summary + ','.join(links)
+    return summary #+ ','.join(links)
 
 # Define and check for local file address prefixes
 def check_local_file_access(url):
@@ -160,7 +160,7 @@ def summarize_text(text, question):
             messages=messages,
             max_tokens=300,
         )
-        summaries.append(summary)
+        summaries.append(summary.choices[0].message.content.strip())
 
     print(f"Summarized {len(chunks)} chunks.")
 
@@ -170,7 +170,7 @@ def summarize_text(text, question):
     final_summary = openai.ChatCompletion.create(
             model=TOOL_LLM_MODEL,
             messages=messages,
-        )
+        ).choices[0].message.content.strip()
 
     return final_summary
 

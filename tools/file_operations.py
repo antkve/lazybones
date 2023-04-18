@@ -2,7 +2,7 @@ import os
 import os.path
 
 # Set a dedicated folder for file I/O
-working_directory = "lazybones_workspace"
+working_directory = "C://Users/abk/Documents/git/lazybones/lazybones_workspace"
 
 if not os.path.exists(working_directory):
     os.makedirs(working_directory)
