@@ -37,7 +37,7 @@ def write_to_file(filename, text):
         
         with open(filepath, "a") as f:
             f.write(text)
-        return "Text appended to file successfully."
+        return "File written successfully."
     except Exception as e:
         return "Error: " + str(e)
 

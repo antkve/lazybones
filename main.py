@@ -11,10 +11,6 @@ import tools.browsing
 
 print(str(tools.browsing.google_search("netflix ticker symbol")))
 
-#codebase_memory = LocalCache("CodebaseMemory")
-all_codebase_signatures = {} # {filename: [signature1, signature2, ...], ...}
-all_pinecone_memory = LocalCache("ActionsMemory")
-all_memory = []
 
 INITIAL_PLANNING_AGENT_PROMPT_FORM = """
 ENVIRONMENT:
@@ -51,83 +47,62 @@ CURRENT TASK:
 Task {task_number}. {task_name}: {task_description}
 
 SUBTASK LIST FORMAT:
-Subtask 1. <Subtask name>: <Subtask description>
-Subtask 2. <Subtask name>: <Subtask description>
+- <Subtask name>: <Subtask description>
 
 TASK {task_number} SUBTASKS:
 """
 
-SUBTASK_SUBTASKER_PROMPT_FORM = """
+SUPERVISOR_CODE_QUESTION_PROMPT_FORM = """
+You are reading your code, trying to answer the following question:
+{question}
+
 ENVIRONMENT:
 {environment}
 
-GOAL:
+FINAL GOAL:
 {goal}
 
-CURRENT TASK LIST:
-{task_list}
+RELEVANT CODE:
+{relevant_code}
 
-CONSTRAINTS:
-Final product must have thorough test coverage. Do not use an IDE. Do not use git, or any other version control system.
+Summarize all the information about this code that might help to answer the question.
+If there is no code relevant to this question here, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
 
-CURRENT TASK:
-Task {task_number}. {task_name}: {task_description}
-
-SUBTASK LIST FORMAT:
-Subtask 1. <Subtask name>: <Subtask description>
-
-TASK {task_number} SUBTASKS:
+Summary:
 """
 
-
-SUPERVISOR_ADVICE_PROMPT_FORM = """
+SUPERVISOR_MEMORY_QUESTION_PROMPT_FORM = """
+You are searching through your memories, trying to answer to this question:
+{question}
 
 ENVIRONMENT:
 {environment}
 
-=== ADVICE FORM 1 ===
-
-FINAL GOAL:
-Create a binary calculator program in python.
-
-RECENT ACTIONS:
-- I wrote some comments in main.py
-- I wrote the following functions/classes in binary_arithmetic.py: add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b), divide_two_numbers(a, b)
-
-RELEVANT LONG-TERM MEMORIES:
-- I wrote the add_two_numbers(a, b) function in utils.py, which takes two binary strings as input, and returns a binary string representing their sum.
-- I wrote the subtract_two_numbers(a, b) function in utils.py, which takes two binary strings as input, and returns a binary string representing their difference.
-- I wrote the multiply_two_numbers(a, b) function in utils.py, which takes two binary strings as input, and returns a binary string representing their product.
-- I ran the following command: pip install -r requirements.txt
-- I marked the subtask "Write binary arithmetic functions: Write some python functions for doing arithmetic on binary strings." as complete.
-
-CURRENT TASK:
-Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
-
-CURRENT SUBTASK:
-Write test for add_two_numbers: Write a test for the add_two_numbers function in the utils.py file.
-
-SUBTASK ADVICE:
-The add_two_numbers function takes two binary strings as input, and returns a binary string as output. You should check that the output is correct for a few different inputs, including some edge cases. You should also check that the function raises an error when given invalid inputs.
-
-=== ADVICE FORM 2 ===
-
 FINAL GOAL:
 {goal}
 
-RECENT ACTIONS:
-{recent_actions}
+MEMORIES:
+{memory_chunk}
 
-RELEVANT LONG-TERM MEMORIES:
-{long_term_memories}
+Summarize all the information about these memories that might help to answer your question.
+If there are no memories relevant to this question, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
 
-CURRENT TASK:
-{current_task}
+Summary:
+"""
 
-CURRENT SUBTASK:
-{current_subtask}
+SUPERVISOR_QUESTION_PROMPT_FORM = """
+Give the answer to the following question:
+{question}
 
-SUBTASK ADVICE:
+Here is what I remember:
+{memory_summary}
+
+Here is what I know about each part of my code:
+{code_summary}
+
+Answer:
 """
 
 MEMORY_RELEVANCE_PROMPT_FORM = """
@@ -190,7 +165,7 @@ OUTPUT:
 
 >BROWSE:
 <url>
-<question>
+<question to try and answer when browsing>
 >ENDACTION
 OUTPUT:
 <answer>
@@ -222,7 +197,9 @@ OUTPUT:
 
 >ADD_TO_FILE:
 <filename>
-<content to add>
+<content
+to
+add>
 >ENDACTION
 OUTPUT:
 <success/failure>
@@ -233,10 +210,11 @@ OUTPUT:
 OUTPUT:
 <success/failure>
 
->CHANGE_CODE:
+>MODIFY_CODE:
 <filename>
-<function or class name to change>
-<new function or class definition>
+<text describing precisely
+which lines to modify
+and how>
 >ENDACTION
 OUTPUT:
 <success/failure>
@@ -247,80 +225,22 @@ OUTPUT:
 OUTPUT:
 None
 
->MARK_TASK_COMPLETE:
-<success/failure>
+>ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
 >ENDACTION
 OUTPUT:
-None
+<supervisor answer>
 """
 
 
-EXECUTE_ACTIONS_PROMPT_FORM = """
+EXECUTOR_PROMPT_FORM = """
+=== INFO ===
+
 ENVIRONMENT:
 {environment}
 
 AVAILABLE ACTIONS:
 {actions}
-
-Execute actions until the current subtask is completed, or you cannot make any more progress.
-Then, mark the subtask as complete, reporting your success or failure, and update the subtask list.
-The supervisor may then give you advice on how to proceed.
-
-=== EXAMPLE RUN ===
-
-FINAL GOAL:
-Create a binary calculator program in python.
-
-COMPLETE TASK LIST:
-Task 1. Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
-Task 2. Write tests: Write tests for the arithmetic functions.
-Task 3. Run tests: Run the tests for the arithmetic functions. (Current task)
-Task 4. Write main.py: Write the main.py file, which will be the entry point for the program.
-Task 5. Run main.py: Run the main.py file, and make sure it works.
-
-CURRENT SUBTASK LIST:
-Subtask 1. Run utils tests: Run the tests for the utils.py file, which are in test_utils.py.
-Subtask 2. Run binary arithmetic tests: Run the tests for the binary arithmetic functions in the test_binary_arithmetic.py file.
-Subtask 3. Run binary string tests: Run the tests for the BinaryString class in the test_binary_string.py file.
-
->THOUGHTS:
-I need to run the test_utils.py tests with the python unittest module.
->ACTION:
->RUN_TERMINAL_COMMAND:
-python -m unittest test_utils.py
->ENDACTION
-OUTPUT:
-.
-----------------------------------------------------------------------
-Ran 1 test in 0.000s
-
-OK
-
->THOUGHTS:
-The test ran succesfully. I've finished the current subtask, so I'll mark it complete.
->ACTION:
->MARK_SUBTASK_COMPLETE:
-success
->ENDACTION
-OUTPUT:
-None
-
-CURRENT SUBTASK LIST:
-Subtask 1. Run binary arithmetic tests: Run the tests for the binary arithmetic functions in the test_binary_arithmetic.py file.
-Subtask 2. Run binary string tests: Run the tests for the BinaryString class in the test_binary_string.py file.
-
->THOUGHTS:
-Now I need to run the test_binary_arithmetic.py tests with the python unittest module.
->ACTION:
->RUN_TERMINAL_COMMAND:
-python -m unittest test_binary_arithmetic.py
->ENDACTION
->OUTPUT:
-...
-
-And so on.
-
-=== ACTUAL RUN ===
 
 FINAL GOAL:
 {goal}
@@ -333,6 +253,22 @@ CURRENT SUBTASK LIST:
 
 SUPERVISOR ADVICE:
 {supervisor_advice}
+
+ACTION EXECUTION SYNTAX:
+\"\"\"
+>THOUGHTS:
+thoughts about the last output and reasoning behind the current action
+>ACTION:
+>ACTION_NAME:
+arg1
+...
+>ENDACTION
+\"\"\"
+
+After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+
+=== CONTINUING TRIAL 1 ===
 
 >THOUGHTS:
 """
@@ -355,54 +291,143 @@ in a way which would be helpful when trying to answer the following question:
 {question}
 
 ANSWER:"""
-
+class TaskComplete(Exception):
+    pass
 model = "text-davinci-003"
 max_tokens = 4096
 
 def subtasks_to_string(subtasks):
-    return '\n'.join([f"Subtask {i + 1}. {subtask.strip()}: {subtask_description}" for i, (subtask, subtask_description) in enumerate(subtasks)])
+    return '\n'.join([f"- {subtask.strip()}: {subtask_description}" for i, (subtask, subtask_description) in enumerate(subtasks)])
+
+def tasks_to_string(tasks, current_subtask_number=None):
+    task_strings = [f"Task {i + 1}. {task.strip()}: {task_description}" for i, (task, task_description) in enumerate(tasks)]
+    if current_subtask_number is not None:
+        task_strings[current_subtask_number] += " (Current task)"
+    return '\n'.join()
 
 def run(cmd):
     completed = subprocess.run(["powershell", "-Command", cmd], stdout=subprocess.PIPE).stdout.decode('utf-8')
     return completed
 
-def main(environment="Fresh install of Ubuntu; command line access only. Apt and a text editor are already installed.\
-Do not research what coding libraries to use; you should be experienced enough to know what you need and how to write the functions you need.\
-Only use the research tools to look up information that isn't related to coding.", main_goal="Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions.", verbose=True, num_retries=3):
+def main(environment="Fresh install of Ubuntu; command line access only. Apt and a text editor are already installed. Do not research unless you have to.", main_goal="Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions.", verbose=True, num_retries=3):
+
+    codebase_memory = LocalCache("CodebaseMemory")
+    codebase_signatures = {} # {filename: [signature1, signature2, ...], ...}
 
     main_goal = main_goal.strip('.')
 
     print("Planning High-Level Tasks...")
     planning_agent_prompt = INITIAL_PLANNING_AGENT_PROMPT_FORM.format(environment=environment, goal=main_goal)
-    tasks_string = model_interaction.model_call(planning_agent_prompt, model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="planning agent")
-    print("\nTASK LIST:")
-    print(tasks_string)
+    planning_agent_output = model_interaction.model_call(planning_agent_prompt, model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="planning agent")
 
-    task_list = re.findall('Task (\d+?)\. (.*?):(.*?)\n', tasks_string)
-    
-    for task_number, task, task_description in task_list:
+    task_list = re.findall('Task \d+?\. (.*?):(.*?)\n', planning_agent_output)
+    command_strings = []
+    actions_memory = LocalCache("actions_memory")
+
+    for task_number, (task, task_description) in enumerate(task_list):
                 
         print(f"\nPlanning Task {task_number} Subtasks...")
-        subtasks_result = model_interaction.model_call(SUBTASKER_PROMPT_FORM.format(environment=environment, goal=main_goal, task_list=tasks_string, task_number=task_number, task_name=task, task_description=task_description),
-                                                    model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="subtasker")
-        print("\nSUBTASK LIST:")
-        print(subtasks_result)
+        subtasks_result = model_interaction.model_call(
+            SUBTASKER_PROMPT_FORM.format(
+                environment=environment,
+                goal=main_goal, 
+                task_list=tasks_to_string(task_list), 
+                task_number=task_number, 
+                task_name=task, 
+                task_description=task_description
+            ),
+            model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="subtasker"
+        )
 
         res = len(re.findall("TASK", subtasks_result))
         if res > 0:
             subtasks_result = subtasks_result.split("\nTASK")[0].strip()
 
-        subtasks = re.findall('Subtask \d*?\.\s*(.*?):(.*?)\n', subtasks_result)
-
+        subtasks = re.findall('- (.*?):(.*?)\n', subtasks_result)
         
-        while len(subtasks) > 0:
 
-            executor_prompt = EXECUTE_ACTIONS_PROMPT_FORM.format(
+        while len(subtasks) > 0:
+            
+            base_executor_prompt = EXECUTOR_PROMPT_FORM.format(
                 environment=environment,
                 available_actions=ACTIONS,
-                
-
+                goal=main_goal,
+                current_tasks=tasks_to_string(task_list, task_number),
+                current_subtasks=subtasks_to_string(subtasks),
+                supervisor_advice=supervisor_advice
             )
+            base_executor_prompt = base_executor_prompt + '\n'.join(command_strings)
+            # Command string format:
+            # <thoughts>
+            # ...
+            # >THOUGHTS:
+            executor_output = model_interaction.model_call(executor_prompt, model=model, temperature=0.7, max_tokens=max_tokens, stop=["ENDCOMMAND"] model_name_for_verbose="executor")
+            executor_thoughts = re.findall("^(.*?)>", executor_output, re.DOTALL)[0].strip()
+            executor_action = re.findall(">ACTION:\n>(.*?)\nENDACTION", executor_output, re.DOTALL)[0].strip()
+            executor_action_name = executor_action.split(":")[0]
+            executor_action_arg_1 = executor_action.split('\n')[1].strip()
+            executor_action_arg_2 = '\n'.join(executor_action.split('\n')[2:]).strip() if len(executor_action.split('\n')) > 2 else None
+
+            if executor_action_name == "GOOGLE":
+                res = tools.browsing.google_search(executor_action_arg_1)
+                memory = f"I googled '{executor_action_arg_1}' and found {res}"
+            elif executor_action_name == "BROWSE":
+                res = tools.browsing.browse_website(executor_action_arg_1, executor_action_arg_2)
+                memory = f"I browsed to {executor_action_arg_1} to answer the question \"{executor_action_arg_2}\" and got the following result: {res}"
+            elif executor_action_name == "RUN_TERMINAL_COMMAND":
+                res = run(executor_action_arg_1)
+                memory = f"I ran the command '{executor_action_arg_1}' and got the following result: {res}"
+            elif executor_action_name == "DO_NOTHING":
+                res = "None"
+                memory = "I did nothing."
+            elif executor_action_name == "NEW_FILE":
+                res = tools.file_operations.write_to_file(executor_action_arg_1, executor_action_arg_2)
+                memory = f"I created a new file called '{executor_action_arg_1}' and wrote the following to it:\n{executor_action_arg_2}"
+            elif executor_action_name == "READ_FILE":
+                res = tools.file_operations.read_file(executor_action_arg_1)
+                memory = f"I read the file '{executor_action_arg_1}'"
+            elif executor_action_name == "ADD_TO_FILE":
+                res = tools.file_operations.write_to_file(executor_action_arg_1, executor_action_arg_2)
+                new_functions = ', '.join(re.findall("def (.*?):\n", executor_action_arg_2, re.DOTALL))
+                new_classes = ', '.join(re.findall("(class .*?):\n", executor_action_arg_2, re.DOTALL))
+                memory = f"I added these new functions and classes to '{executor_action_arg_1}':\n{new_functions}; {new_classes}"
+            elif executor_action_name == "DELETE_FILE":
+                res = tools.file_operations.delete_file(executor_action_arg_1)
+                memory = f"I deleted the file '{executor_action_arg_1}'"
+            elif executor_action_name == "MODIFY_CODE":
+                code_text = tools.file_operations.read_file(executor_action_arg_1)
+                res = model_interaction.edit_call(code_text, executor_action_arg_2, model=model, temperature=0.7, max_tokens=2000, model_name_for_verbose="code editor")
+                tools.file_operations.write_to_file(executor_action_arg_1, res)
+                memory = f"I modified the file '{executor_action_arg_1}' based on the following instructions:\n{executor_action_arg_2}"
+
+            elif executor_action == "MARK_SUBTASK_COMPLETE":
+                subtasks = subtasks[1:]
+                res = "Finished subtask {subtask}".format(subtask=subtasks[0][0] + ": " + subtasks[0][1])
+                memory = "I finished the subtask {subtask}".format(subtask=subtasks[0][0] + ": " + subtasks[0][1])
+            elif executor_action == "ASK_SUPERVISOR":
+
+                supervisor_memory_question_prompt = SUPERVISOR_MEMORY_QUESTION_PROMPT_FORM.format(
+                    question=executor_action_arg_1,
+                    environment=environment,
+                    goal=main_goal,
+                    memory_chunk='\n -'.join(actions_memory.data.texts)
+                )
+                supervisor_code_question_prompt = SUPERVISOR_CODE_QUESTION_PROMPT_FORM.format(
+                    question=executor_action_arg_1,
+                    environment=environment,
+                    goal=main_goal,
+                    code_chunk='\n -'.join(codebase_signatures_string)
+                )
+                supervisor_advice_prompt = SUPERVISOR_QUESTION_PROMPT_FORM.format(
+                    environment=environment, 
+                    goal=main_goal,
+                    current_task=task + ": " + task_description,
+                    current_subtask=subtasks[0][0] + ": " + subtasks[0][1],
+                    recent_actions=short_term_memories,
+                    long_term_memories=long_term_memories)
+                supervisor_advice = model_interaction.model_call(supervisor_advice_prompt, model=model, temperature=0.7, max_tokens=400, stop=['==='], model_name_for_verbose="supervisor/advisor")
+                
+            actions_memory.add(memory)
 
             codebase_signatures_string = "\n".join(["{filename}:\n{functions}}".format(
                 filename=filename,
@@ -427,7 +452,7 @@ Only use the research tools to look up information that isn't related to coding.
             long_term_memories = all_pinecone_memory.get_relevant(subtasks[0][1], 5)
             long_term_memories = '\n'.join([f"- {memory}" for memory in long_term_memories])
 
-            supervisor_advice_prompt = SUPERVISOR_ADVICE_PROMPT_FORM.format(
+            supervisor_advice_prompt = SUPERVISOR_QUESTION_PROMPT_FORM.format(
                 environment=environment, 
                 goal=main_goal,
                 current_task=task + ": " + task_description,
