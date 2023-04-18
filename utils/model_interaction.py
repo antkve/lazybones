@@ -92,7 +92,6 @@ def model_call(
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
-                    suffix=suffix,
                     n=1,
                     stop=None,
                 )
