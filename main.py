@@ -1,323 +1,252 @@
 import os
+import unittest
 
 import dotenv
 dotenv.load_dotenv()
-import re
+import regex as re
 from utils import model_interaction
 import subprocess
 from local import LocalCache
+import tools.browsing
+import argparse
+import prompt_forms
 
 
-print(os.environ["PINECONE_API_KEY"])
-
-codebase_memory = LocalCache("CodebaseMemory")
-all_codebase_signatures = {} # {filename: [signature1, signature2, ...], ...}
-all_pinecone_memory = LocalCache("ActionsMemory")
-all_memory = []
-
-INITIAL_PLANNING_AGENT_PROMPT_FORM = """
-GOAL:
-{goal}.
-
-CONSTRAINTS:
-You are on a fresh install of Arch linux, with only command line access.
-Final product must have thorough test coverage.
-
-TASK LIST FORMAT:
-Task 1. <Task name>: <Task description>
-Task 2. <Task name>: <Task description>
-...
-
-FULL TASK LIST:
-"""
-
-SUBTASKER_PROMPT_FORM = """
-GOAL:
-{goal}
-
-CURRENT TASK LIST:
-{task_list}
-
-CONSTRAINTS:
-You are on a fresh install of Arch linux, with only command line access.
-Final product must have thorough test coverage.
-
-CURRENT TASK: Task {task_number}.
-
-SUBTASK LIST FORMAT:
-Subtask 1. <Subtask name>: <Subtask description>
-
-TASK {task_number} SUBTASKS:
-"""
-
-SUBTASK_CATEGORIZER_PROMPT_FORM = """
-FINAL GOAL:
-{goal}
-
-CURRENT TASK LIST:
-{subtask_list}
-
-Which of the following categories best describes the actions needed for the current task?
-
-1. Writing code
-2. Sequence of terminal commands
-3. Debugging
-4. Research
-5. Multiple categories
-
-Respond only with the number of the category.
-
-Answer:
-"""
-
-
-RELEVANT_CODE_PROMPT_FORM = """
-FINAL GOAL:
-{goal}
-
-CURRENT TASK:
-{current_task}
-
-These are signatures of some of the files, functions and classes in the codebase:
-
-{codebase_signatures}
-
-Write the signatures of the functions and classes in the codebase most relevant to the current task, if there are any.
-If there are no relevant functions or classes, write "None".
-Make sure to write them in the same format they are in above, with the filename followed by the functions/classes.
-
-RESPONSE:
-"""
-
-SUPERVISOR_ADVICE_PROMPT_FORM = """
-FINAL GOAL:
-{goal}
-
-CURRENT TASK:
-{current_task}
-
-RELEVANT RECENT ACTIONS:
-{recent_actions}
-
-RELEVANT LONG-TERM MEMORIES:
-{long_term_memories}
-
-Message the agent asking him to perform the current task, including any relevant information or advice.
-MESSAGE:
-"""
-
-
-WRITE_CODE_PROMPT_FORM = """
-FINAL GOAL:
-{goal}
-
-CURRENT TASK:
-{current_task}
-
-EXISTING FUNCTIONS/CLASSES:
-{relevant_code}
-
-SUPERVISOR_ADVICE:
-{supervisor_advice}
-
-Using the above goal, code snippets and advice, write python code to perform the following subtask:
-{subtask_string}
-
-You may use any functions or classes from the codebase, or write new ones. Make sure your code is compatible with the existing codebase.
-Your response should be in the following format:
-
-File: <filename>.py
-Code:
-<code>
-
-If there are multiple files to be written to, separate them with a line of dashes.
-Your code should be a complete solution; do not leave any TODOs or temporary code.
-Each function must specify its return type using a type hint.
-
-COMPLETED CODE:
-"""
-
-
-EXECUTE_COMMANDS_PROMPT_FORM = """
-FINAL GOAL:
-{goal}
-
-CURRENT TASK:
-{current_task}
-
-EXISTING FUNCTIONS/CLASSES:
-{relevant_code}
-
-SUPERVISOR_ADVICE:
-{supervisor_advice}
-
-Using the above goal, code snippets and advice, execute the terminal commands necessary to perform the following subtask:
-{subtask_string}
-
-Write the next command, followed by a new line and "EXECUTENOW".
-You will then be prompted with the command's output, after which you can either execute another command, mark the task as completed by running "END", or mark the task as failed by running "FAIL".
-
-COMMAND:
-"""
-
-
-
-model = "text-davinci-003"
+class TaskComplete(Exception):
+    pass
+DEFAULT_MODEL = "text-davinci-003" #"gpt-3.5-turbo" 
+DEFAULT_GOAL = "Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions."
 max_tokens = 4096
 
-        
-def subtasks_to_string(subtasks):
-    return '\n'.join([f"Subtask {i + 1}. {subtask}: {subtask_description}" for i, (subtask, subtask_description) in enumerate(subtasks)])
+def subtasks_to_string(subtasks, current_subtask_number=None):
+    subtask_strings = [f"- {subtask.strip()}" for subtask in subtasks]
+    if current_subtask_number is not None:
+        subtask_strings[current_subtask_number - 1] += " (Current subtask)"
+    return '\n'.join(subtask_strings)
 
+def get_most_possible_recent(source_string_list, k):
+    outputs = []
+    for source_string in source_string_list[::-1]:
+        output_string = '\n'.join(outputs)
+        if len(output_string + source_string) <= k:
+            outputs.append(source_string)
+        else:
+            break
+    output_string = '\n'.join(outputs[::-1])
+    return output_string
 
-def main(main_goal="Write a 2d raytracer in C++, with shadows, reflections and refractions.", verbose=True):
+def tasks_to_string(tasks, current_task_number=None):
+    task_strings = [f"Task {i + 1}. {task.strip()}: {task_description}" for i, (task, task_description) in enumerate(tasks)]
+    if current_task_number is not None:
+        task_strings[current_task_number - 1] += " (Current task)"
+    return '\n'.join(task_strings)
+
+def run(cmd):
+    completed = subprocess.run(["powershell", "-Command", cmd], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    return completed
+
+def get_supervisor_advice(environment, main_goal, task, task_description, subtasks, all_actions, actions_memory, model):
+    long_term_memories = actions_memory.get_relevant('\n'.join(all_actions[-5:]), 50) if len(all_actions) > 5 else []
+    supervisor_advice_prompt = prompt_forms.SUPERVISOR_ADVICE_PROMPT_FORM.format(
+        environment=environment,
+        goal=main_goal, 
+        current_task=f"{task}: {task_description}",
+        current_subtasks=subtasks_to_string(subtasks),
+        recent_actions= get_most_possible_recent(all_actions, 4000), # '\n'.join(command_strings[-5:]),
+        long_term_memories= get_most_possible_recent(long_term_memories, 4000) if long_term_memories else "None",
+    )
+    return model_interaction.model_call(supervisor_advice_prompt, model=model, temperature=0.5, max_tokens=400, model_name_for_verbose="supervisor")
+            
+
+def main(main_goal, environment="You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.",
+         terminal_input_output=False, model="text-davinci-003"):
+
+    run("cd lazybones_workspace")
+
+    codebase_memory = LocalCache("CodebaseMemory")
+    codebase_signatures = {} # {filename: [signature1, signature2, ...], ...}
+
     main_goal = main_goal.strip('.')
 
     print("Planning High-Level Tasks...")
-    planning_agent_prompt = INITIAL_PLANNING_AGENT_PROMPT_FORM.format(goal=main_goal)
-    tasks_string = model_interaction.model_call(planning_agent_prompt, model=model, temperature=0.7, max_tokens=400)
-    print("\nTASK LIST:")
-    print(tasks_string)
+    planning_agent_prompt = prompt_forms.INITIAL_PLANNING_AGENT_PROMPT_FORM.format(environment=environment, goal=main_goal)
+    planning_agent_output = model_interaction.model_call(planning_agent_prompt, model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="planner")
 
-    task_list = re.findall('Task (\d+?)\. (.*?):(.*?)\n', tasks_string)
-    
-    for task_number, task, task_description in task_list:
+    task_list = re.findall('Task \d+?\. (.*?):(.*?)\n', planning_agent_output)
+    command_strings = []
+    actions_memory = LocalCache("actions_memory")
+    all_actions = []
 
+    supervisor_counter = 0
+    for task_number, (task, task_description) in enumerate(task_list):
+        task_number = task_number + 1
         print(f"\nPlanning Task {task_number} Subtasks...")
-        subtasks_string = model_interaction.model_call(SUBTASKER_PROMPT_FORM.format(goal=main_goal, task_list=tasks_string, task_number=task_number),
-                                                    model=model, temperature=0.7, max_tokens=400)
-        print("\nSUBTASK LIST:")
-        print(subtasks_string)
+        long_term_memories = actions_memory.get_relevant('\n'.join(all_actions[-5:]), 50) if len(all_actions) > 5 else []
+        subtasks_output = model_interaction.model_call(
+            prompt_forms.SUBTASKER_PROMPT_FORM.format(
+                environment=environment,
+                goal=main_goal, 
+                task_list=tasks_to_string(task_list, task_number), 
+                task_number=task_number, 
+                task_name=task,
+                recent_actions=get_most_possible_recent(all_actions, 4000),
+                long_term_memories=get_most_possible_recent(long_term_memories, 4000) if long_term_memories else "None",
+                task_description=task_description
+            ),
+            model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="subtasker"
+        )
 
-        subtasks = re.findall('Subtask \d*?\.\s*(.*?):(.*?)\n', subtasks_string)
+        num_tasks_outputted = len(re.findall("TASK", subtasks_output))
+        if num_tasks_outputted > 0:
+            subtasks_output = subtasks_output.split("\nTASK")[0].strip()
 
-        res = len(re.findall("TASK", subtasks_to_string(subtasks)))
-        if res > 0:
-            subtasks_string = subtasks_string.split("\nTASK")[0].strip()
+        subtasks = re.findall('(?:\n|^)-\s?(.*?)\s*(?:\n|$)', subtasks_output, overlapped=True)
+        supervisor_advice_output = get_supervisor_advice(environment, main_goal, task, task_description, subtasks, all_actions, actions_memory, model=model)
 
-        
         while len(subtasks) > 0:
-
-            current_subtask_category = model_interaction.model_call(SUBTASK_CATEGORIZER_PROMPT_FORM.format(goal=main_goal, subtask_list=re.sub("Subtask", "Task", subtasks_to_string(subtasks))),
-                                                    model=model, temperature=0.7, max_tokens=400)
-            print("\nCURRENT SUBTASK CATEGORY:")
-            print(current_subtask_category)
-
-            current_subtask_category = re.search('(\d*)', current_subtask_category)
-            current_subtask_category = int(current_subtask_category.group()) if current_subtask_category else None
-
-            if current_subtask_category == 5:
-
-                print("SPLITTING SUBTASK 1 INTO MULTIPLE SUBTASKS...")
-                subtasker_prompt = SUBTASKER_PROMPT_FORM.format(goal=main_goal, task_list=re.sub("Subtask", "Task", subtasks_to_string(subtasks)), task_number=1)
-                subtasks_to_append = model_interaction.model_call(subtasker_prompt,
-                                                        model=model, temperature=0.7)
-                subtasks_to_append = re.findall('Subtask (d*?)\.\s*?(.?):(.?)', subtasks_to_append)
-                subtasks = []
-                for subtask in subtasks_to_append:
-                    subtasks.append(subtask)
-                for subtask in subtasks[:1]:
-                    subtasks.append(subtask)
-                print("NEW SUBTASK LIST:")
-                print(subtasks_to_string(subtasks))
-                new_memory_string = "I split subtask 1 into these subtasks:" + subtasks_to_string(subtasks).replace('\n', ', ')
-                all_memory.append(new_memory_string)
-                all_pinecone_memory.add(new_memory_string)
-                continue
-            
-            
-            codebase_signatures_string = "\n".join(["{filename}:\n{functions}}".format(
-                filename=filename,
-                functions=('\n'.join([f"    - {sig}" for sig in signatures]))) for filename, signatures in all_codebase_signatures.items()])
-
-            if verbose:
-                print("\nAll codebase signatures:")
-                print(codebase_signatures_string + '\n' if len(all_codebase_signatures) > 0 else "None")
-
-            if len(all_codebase_signatures) > 0:
-                relevant_code_prompt = RELEVANT_CODE_PROMPT_FORM.format(
-                    goal=main_goal,
-                    current_task=task + ": " + task_description,
-                    codebase_signatures=(codebase_signatures_string))
-                relevant_code = model_interaction.model_call(relevant_code_prompt, model=model, temperature=0.7)
-            else:
-                relevant_code = "None"
-            
-            short_term_memories = all_memory[-5:]
-            short_term_memories = '\n'.join([f"- {memory}" for memory in short_term_memories])
-            long_term_memories = all_pinecone_memory.get_relevant(subtasks_to_string(subtasks).split('Subtask')[1], 10)
-            long_term_memories = '\n'.join([f"- {memory}" for memory in long_term_memories])
-
-            supervisor_advice_prompt = SUPERVISOR_ADVICE_PROMPT_FORM.format(
+            base_executor_prompt = prompt_forms.EXECUTOR_PROMPT_FORM.format(
+                environment=environment,
+                actions=prompt_forms.ACTIONS,
                 goal=main_goal,
-                current_task=task,
-                recent_actions=short_term_memories,
-                long_term_memories=long_term_memories)
-            supervisor_advice = model_interaction.model_call(supervisor_advice_prompt, model=model, temperature=0.7, max_tokens=400)
+                current_tasks=tasks_to_string(task_list, task_number),
+                current_subtasks=subtasks_to_string(subtasks),
+                supervisor_advice=supervisor_advice_output
+            )
+            commands_recent = get_most_possible_recent(command_strings, 6500)
+            executor_prompt = base_executor_prompt + commands_recent
+            # Command string format:
+            # <thoughts>
+            # ...
+            # >THOUGHTS:
+            executor_output = model_interaction.model_call(executor_prompt, model=model, temperature=0.7, max_tokens=1000, stop=[">ENDACTION"], model_name_for_verbose="executor")
+            try:
+                executor_thoughts = re.findall("^(.*?)>", executor_output, re.DOTALL)[0].strip()
+                executor_action = re.findall(">ACTION:\n(.*?)$", executor_output, re.DOTALL)[0].strip()
+                executor_action_name = executor_action.split(":")[0].strip()
+                executor_action_arg_1 = executor_action.split('\n')[1].strip()
+                executor_action_arg_2 = '\n'.join(executor_action.split('\n')[2:]).strip() if len(executor_action.split('\n')) > 2 else None
+            except IndexError:
+                executor_action_name = "INVALID"
+            input("Press enter to continue with action...")
+
+            if executor_action_name == "GOOGLE":
+                res = tools.browsing.google_search(executor_action_arg_1)
+                memory = f"I googled '{executor_action_arg_1}' and found {res}"
+            elif executor_action_name == "BROWSE":
+                res = tools.browsing.browse_website(executor_action_arg_1, executor_action_arg_2)
+                memory = f"I browsed to {executor_action_arg_1} to answer the question \"{executor_action_arg_2}\" and got the following result: {res}"
+            elif executor_action_name == "RUN_TERMINAL_COMMAND":
+                # import sys 
+                # print("Enter command output:")
+                # inputlist = sys.stdin.readlines() 
+                # print(inputlist)
+                if executor_action_arg_2 is not None:
+                    executor_action_arg_1 += "\n" + executor_action_arg_2
+                res = ""
+                for line in executor_action_arg_1.split("\n"):
+                    res += "\n" + run(line) # res = input("Enter command output:")
+                if len(res) > 2000:
+                    res = res[:1000] + "..." + res[-1000:]
+                res = res.strip()
+                memory = f"I ran the command '{executor_action_arg_1}' and got the following result(s): {res if res != '' else 'Success'}"
+            elif executor_action_name == "DO_NOTHING":
+                res = "None"
+                memory = "I did nothing."
+            elif executor_action_name == "WRITE_FILE":
+                res = tools.file_operations.write_to_file(executor_action_arg_1, executor_action_arg_2)
+                new_functions = re.findall("(?:^|\n)def (.*?):\n", executor_action_arg_2, re.DOTALL)
+                new_classes = re.findall("(class .*?):\n", executor_action_arg_2, re.DOTALL)
+                codebase_signatures[executor_action_arg_1] = new_functions + new_classes
+                memory = f"I added these new functions and classes to '{executor_action_arg_1}':\n{', '.join(new_functions)}; {', '.join(new_classes)}" if len(new_functions) > 0 or len(new_classes) > 0 else f"I added the following to '{executor_action_arg_1}':\n{executor_action_arg_2}"
             
-            if verbose:
-                print("RELEVANT CODE:")
-                print(relevant_code)
-                print("SUPERVISOR ADVICE:")
-                print(supervisor_advice)
-            
-            if current_subtask_category == 1:
+            elif executor_action_name == "READ_FILE":
+                res = tools.file_operations.read_file(executor_action_arg_1)
+                memory = f"I read the file '{executor_action_arg_1}'"
+            elif executor_action_name == "ADD_TO_FILE":
+                res = tools.file_operations.write_to_file(executor_action_arg_1, executor_action_arg_2)
+                new_functions = re.findall("(?:^|\n)def (.*?):\n", executor_action_arg_2, re.DOTALL)
+                new_classes = re.findall("(class .*?):\n", executor_action_arg_2, re.DOTALL)
+                codebase_signatures[executor_action_arg_1] = new_functions + new_classes
+                memory = f"I added these new functions and classes to '{executor_action_arg_1}':\n{', '.join(new_functions)}; {', '.join(new_classes)}" if len(new_functions) > 0 or len(new_classes) > 0 else f"I added the following to '{executor_action_arg_1}':\n{executor_action_arg_2}"
+            elif executor_action_name == "DELETE_FILE":
+                res = tools.file_operations.delete_file(executor_action_arg_1)
+                memory = f"I deleted the file '{executor_action_arg_1}'"
+            elif executor_action_name == "MODIFY_CODE":
+                code_text = tools.file_operations.read_file(executor_action_arg_1)
+                res = model_interaction.edit_call(code_text, executor_action_arg_2, temperature=0.7, model_name_for_verbose="code editor")
+                tools.file_operations.write_to_file(executor_action_arg_1, res)
+                memory = f"I modified the file '{executor_action_arg_1}' based on the following instructions:\n{executor_action_arg_2}"
+            elif executor_action_name == "MARK_TASK_COMPLETE":
+                res = "Finished task '{task}'".format(task=f"{task}: {task_description}")
+                memory = "I marked the task '{task}' as completed".format(task=f"{task}: {task_description}")
+                subtasks = []
+            elif executor_action_name == "ASK_SUPERVISOR":
                 
-                print("WRITING CODE...")
-
-                write_code_prompt = WRITE_CODE_PROMPT_FORM.format(goal=main_goal, current_task=task, relevant_code=relevant_code, supervisor_advice=supervisor_advice, subtask_string=subtasks_string)
-                code_output = model_interaction.model_call(write_code_prompt,
-                                                        model=model, temperature=0.7, max_tokens=max_tokens)
-                py_function_regex = "\ndef (.*?):\s*\n"
-                py_class_regex = "\nclass (.*?):\s*\n"
-                files_to_write = re.findall("File: (.*?)\n", code_output)
-                i = 0
-                for file_code in code_output.split('File: '):
-                    if file_code.strip() == '':
-                        continue
-                    file_functions = re.findall(py_function_regex, file_code)
-                    file_classes = re.findall(py_class_regex, file_code)
-                    file_name = files_to_write[i]
-                    all_codebase_signatures[file_name] = file_functions + file_classes
-                    with open(file_name, 'w') as f:
-                        f.write(file_code.split('Code: \n')[1].strip())
-                    new_memory_string = f"I wrote these functions and classes in {file_name}:" + ', '.join(file_functions) + '; ' + ', '.join(file_classes)
-                    all_memory.append(new_memory_string)
-                    all_pinecone_memory.add(new_memory_string)
-                    i += 1
-                subtasks = subtasks[1:]
-                continue
-            
-            elif current_subtask_category == 2:
-                print("EXECUTING TERMINAL COMMANDS...")
-                terminal_command_prompt = EXECUTE_COMMANDS_PROMPT_FORM.format(
+                supervisor_memory_question_prompt = prompt_forms.SUPERVISOR_MEMORY_QUESTION_PROMPT_FORM.format(
+                    question=executor_action_arg_1,
+                    environment=environment,
                     goal=main_goal,
-                    current_task=task,
-                    relevant_code=relevant_code,
-                    supervisor_advice=supervisor_advice,
-                    subtask_string=subtasks_string)
-                while True:
-                    terminal_command = model_interaction.model_call(terminal_command_prompt, model=model, temperature=0.7, max_tokens=400,
-                                                                    stop=['EXECUTENOW'])
-                    if terminal_command.strip() == 'END':
-                        command_result = True
-                        break
-                    if terminal_command.strip() == 'FAIL':
-                        command_result = False
-                        break
-                    print("TERMINAL COMMAND:")
-                    print(terminal_command)
-                    command_output = subprocess.run(terminal_command, shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')
-                    os.system(terminal_command)
-                    new_memory_string = f"I ran this terminal command: {terminal_command} and got this output: {command_output}"
-                    all_memory.append(new_memory_string)
-                    all_pinecone_memory.add(new_memory_string)
-                    terminal_command_prompt = terminal_command_prompt + f"{terminal_command}\nEXECUTENOW\n\nCommand output:\n{command_output}\n\nCOMMAND:\n"
-                if not command_result:
-                    quit()
-                subtasks = subtasks[1:]
-                continue
+                    memory_chunk='\n- '.join(all_actions)
+                )
+                supervisor_memory_question_output = model_interaction.model_call(supervisor_memory_question_prompt, model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="supervisor/advisor")
+                
+                code_chunk = ""
+                for filename, signatures in codebase_signatures.items():
+                    file_contents = tools.file_operations.read_file(filename)
+                    code_chunk += '>>>' + filename + ' CONTENTS:\n\n' + file_contents + '\n\n'
+                supervisor_code_question_prompt = prompt_forms.SUPERVISOR_CODE_QUESTION_PROMPT_FORM.format(
+                    question=executor_action_arg_1,
+                    environment=environment,
+                    goal=main_goal,
+                    code_chunk=code_chunk
+                )
+                supervisor_code_question_output = model_interaction.model_call(supervisor_code_question_prompt, model=model, temperature=0.7, max_tokens=400, model_name_for_verbose="supervisor/advisor")
+                supervisor_question_prompt = prompt_forms.SUPERVISOR_QUESTION_PROMPT_FORM.format(
+                    goal=main_goal,
+                    task_list=tasks_to_string(task_list),
+                    question=executor_action_arg_1,
+                    subtask=subtasks[0][0],
+                    supervisor_advice=supervisor_advice_output,
+                    memory_summary=supervisor_memory_question_output,
+                    code_summary=supervisor_code_question_output
+                )
+                    
+                res = model_interaction.model_call(supervisor_question_prompt, model=model, temperature=0.7, max_tokens=400, stop=['==='], model_name_for_verbose="supervisor/advisor")
+                memory = f"I asked the supervisor the question '{executor_action_arg_1}' and got the following reply: {res}"
             else:
-                quit()
+                executor_action_name = "INVALID"
+                res = "Error: Action not understood. Please try again. Make sure you include thoughts and an action."
+            
+            
+            endaction_string = ""
+            if executor_action_name != "INVALID":
+                endaction_string = ">ENDACTION\n" 
+                all_actions.append(memory)
+                model_interaction.printlog(memory)
+                if len(all_actions) > 5:
+                    actions_memory.add(all_actions[-6])
+            
+            command_string = f"{executor_output}\n{endaction_string}OUTPUT:\n{res.strip()}\n\n>THOUGHTS:\n"
+            supervisor_counter += 1
+            if supervisor_counter % 3 == 0 and executor_action_name not in ["ASK_SUPERVISOR", "INVALID", "MARK_TASK_COMPLETE"]:
+                supervisor_advice_output_momentary = get_supervisor_advice(environment, main_goal, task, task_description, subtasks, all_actions, actions_memory, model=model)
+                command_string = command_string[:-12] + f"\nSUPERVISOR FEEDBACK:\n{supervisor_advice_output_momentary}" + command_string[-12:]
+                # subtask_updater_prompt = prompt_forms.SUBTASK_UPDATER_PROMPT_FORM.format(
+                #     environment=environment,
+                #     goal=main_goal,
+                #     task_list=tasks_to_string(task_list, task_number),
+                #     command_strings='\n- ' + '\n- '.join([command_string] + command_strings[-5:]),
+                #     subtask_list=subtasks_to_string(subtasks),
+                # )
+                # subtasks_output = model_interaction.model_call(subtask_updater_prompt, model=model, temperature=0.7, max_tokens=400, stop=['==='], model_name_for_verbose="subtask updater")
+                # subtasks = re.findall('(?:\n|^)- (.*?)\n', subtasks_output)
 
-main()
+            command_strings.append(command_string)
+
+if __name__=="__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("--goal", type=str, default=DEFAULT_GOAL)
+    argparser.add_argument("--model", type=str, default=DEFAULT_MODEL)
+    args = argparser.parse_args()
+
+    main(args.goal, model=args.model)

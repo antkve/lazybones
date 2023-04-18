@@ -1,0 +1,2209 @@
+===================== CONTEXT SENT TO PLANNER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions.
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+TASK LIST FORMAT:
+Task 1. <Task name>: <Task description>
+Task 2. <Task name>: <Task description>
+...
+
+FULL TASK LIST:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM PLANNER AGENT --------------------------
+Task 1. Write basic structure: Write the basic structure of the library, including classes, functions, and methods. 
+Task 2. Write classes: Write classes for the Ray and Raycaster objects, and for the Scene, Objects, and Materials.
+Task 3. Write raycasting functions: Write the raycasting functions for the Raycaster object, for creating the rays and tracing them through the scene.
+Task 4. Implement shadows: Implement shadows, including raytracing from the light source and from the object itself.
+Task 5. Implement reflections and refractions: Implement reflections and refractions, including raytracing from the light source, the object, and the reflection/refraction.
+Task 6. Write test coverage: Write thorough test coverage of all of the classes, functions, and methods in the library.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUBTASKER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK LIST:
+Task 1. Write basic structure:  Write the basic structure of the library, including classes, functions, and methods.  (Current task)
+Task 2. Write classes:  Write classes for the Ray and Raycaster objects, and for the Scene, Objects, and Materials.
+Task 3. Write raycasting functions:  Write the raycasting functions for the Raycaster object, for creating the rays and tracing them through the scene.
+Task 4. Implement shadows:  Implement shadows, including raytracing from the light source and from the object itself.
+Task 5. Implement reflections and refractions:  Implement reflections and refractions, including raytracing from the light source, the object, and the reflection/refraction.
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+CURRENT TASK:
+Task 1. Write basic structure:  Write the basic structure of the library, including classes, functions, and methods. 
+
+RECENT ACTIONS:
+
+
+RELEVANT LONG-TERM MEMORIES:
+None
+
+SUBTASK LIST FORMAT:
+- <Subtask description>
+- <Subtask description>
+...
+
+TASK 1 SUBTASKS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUBTASKER AGENT --------------------------
+- Write Ray and Raycaster classes
+- Write Scene, Objects, and Materials classes
+- Write raycasting functions for Raycaster object
+- Write functions for creating rays and tracing them through the scene
+- Write functions for creating shadows
+- Write functions for creating reflections and refractions
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR AGENT =====================
+
+Based on the developer's recent actions, give them advice on their current task.
+Include any the information you think would help them.
+If the developer has done something wrong, let them know.
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+=== PROBLEM 1 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Create a binary calculator program in python.
+
+CURRENT TASK:
+Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
+
+CURRENT SUBTASKS:
+- Write test for BinaryString class
+- Write test for add_two_numbers
+- Write test for subtract_two_numbers
+- Write test for multiply_two_numbers
+- Run the tests
+
+RECENT ACTIONS:
+- I wrote some comments in main.py
+- I wrote the following functions/classes in test_binary_arithmetic.py: test_binary_string(a), test_add_two_numbers(a, b)
+- I wrote the following functions/classes in logging.py: log(message), log_error(message), log_warning(message), log_success(message)
+- I ran the command 'python main.py' and got the following output: "Hello world!"
+- I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
+
+RELEVANT LONG-TERM MEMORIES:
+- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
+- I ran the following command: pip install unittest
+- I installed python and unittest
+
+MESSAGE:
+Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
+and should be in a file called test_binary_arithmetic.py. It should use the unittest module.
+
+=== TRIAL SUCCESS ===
+
+=== PROBLEM 2 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK:
+Write basic structure:  Write the basic structure of the library, including classes, functions, and methods. 
+
+CURRENT SUBTASKS:
+- Write Ray and Raycaster classes
+- Write Scene, Objects, and Materials classes
+- Write raycasting functions for Raycaster object
+- Write functions for creating rays and tracing them through the scene
+- Write functions for creating shadows
+- Write functions for creating reflections and refractions
+
+RECENT DEVELOPER ACTIONS AND THOUGHTS:
+
+
+DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
+None
+
+MESSAGE:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR AGENT --------------------------
+It looks like you're just starting out with this project. Before you jump into writing the code, you should take some time to plan out exactly what classes and functions you'll need, and how they'll interact with each other. This will help you stay organized and make sure you don't miss anything. Once you have a plan, you can start writing the code for the Ray and Raycaster classes.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Write basic structure:  Write the basic structure of the library, including classes, functions, and methods.  (Current task)
+Task 2. Write classes:  Write classes for the Ray and Raycaster objects, and for the Scene, Objects, and Materials.
+Task 3. Write raycasting functions:  Write the raycasting functions for the Raycaster object, for creating the rays and tracing them through the scene.
+Task 4. Implement shadows:  Implement shadows, including raytracing from the light source and from the object itself.
+Task 5. Implement reflections and refractions:  Implement reflections and refractions, including raytracing from the light source, the object, and the reflection/refraction.
+
+CURRENT SUBTASK LIST:
+- Write Ray and Raycaster classes
+- Write Scene, Objects, and Materials classes
+- Write raycasting functions for Raycaster object
+- Write functions for creating rays and tracing them through the scene
+- Write functions for creating shadows
+- Write functions for creating reflections and refractions
+
+SUPERVISOR INSTRUCTIONS:
+It looks like you're just starting out with this project. Before you jump into writing the code, you should take some time to plan out exactly what classes and functions you'll need, and how they'll interact with each other. This will help you stay organized and make sure you don't miss anything. Once you have a plan, you can start writing the code for the Ray and Raycaster classes.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to plan out my classes, functions, and methods.
+>ACTION:
+ASK_SUPERVISOR:
+What are the best practices for planning out my codebase?
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR/ADVISOR AGENT =====================
+
+You are searching through your memories, trying to answer to this question:
+What are the best practices for planning out my codebase?
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+MEMORIES:
+
+
+Summarize all the information about these memories that might help to answer your question.
+If there are no memories relevant to this question, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
+
+Summary:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR/ADVISOR AGENT --------------------------
+I am an experienced professional developer on a Ubuntu machine, and I need to plan out a codebase for writing a 2D raytracing library in C++ for use in 2D platformers. I should only use the actions provided and not use an IDE or text editor; instead, use write_file, modify_code, and similar commands. I should try to complete the subtasks one at a time and not research or google anything unless I absolutely have to.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR/ADVISOR AGENT =====================
+
+You are reading your code, trying to answer the following question:
+What are the best practices for planning out my codebase?
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CODE SECTIONS:
+
+
+Summarize all the information about this code that might help to answer the question.
+If there is no code relevant to this question here, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
+
+Summary:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR/ADVISOR AGENT --------------------------
+This codebase is for a 2D raytracing library written in C++. The final goal is to create a library for use in 2D platformers with shadows, reflections, and refractions. The environment in which this codebase is being written is a Ubuntu machine, and the developer is experienced with professional coding knowledge. The best practices for planning out the codebase should include using terminal commands to make directories, using functions like write_file and modify_code to write and modify code, and completing subtasks one at a time.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO PLANNER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions.
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+TASK LIST FORMAT:
+Task 1. <Task name>: <Task description>
+Task 2. <Task name>: <Task description>
+...
+
+FULL TASK LIST:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM PLANNER AGENT --------------------------
+Task 1. Create Project Structure: Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files.
+Task 2. Create Vector Class: Create a Vector class to represent 2D points and vectors. Include functions to retrieve and set the x and y components of the vector, and to perform basic vector math such as addition and scalar multiplication.
+Task 3. Create Ray Class: Create a Ray class to represent a ray in 2D space. Include functions to retrieve and set the start and end points of the ray, and to calculate the direction of the ray.
+Task 4. Create Raytracer Class: Create a Raytracer class to represent a 2D raytracer. Include functions to trace a ray, calculate shadows and reflections, and calculate refractions.
+Task 5. Create Tests: Create tests for all of the above classes to ensure that they are functioning correctly.
+Task 6. Write Documentation: Write documentation for all of the above classes and functions.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUBTASKER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK LIST:
+Task 1. Create Project Structure:  Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files. (Current task)
+Task 2. Create Vector Class:  Create a Vector class to represent 2D points and vectors. Include functions to retrieve and set the x and y components of the vector, and to perform basic vector math such as addition and scalar multiplication.
+Task 3. Create Ray Class:  Create a Ray class to represent a ray in 2D space. Include functions to retrieve and set the start and end points of the ray, and to calculate the direction of the ray.
+Task 4. Create Raytracer Class:  Create a Raytracer class to represent a 2D raytracer. Include functions to trace a ray, calculate shadows and reflections, and calculate refractions.
+Task 5. Create Tests:  Create tests for all of the above classes to ensure that they are functioning correctly.
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+CURRENT TASK:
+Task 1. Create Project Structure:  Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files.
+
+RECENT ACTIONS:
+
+
+RELEVANT LONG-TERM MEMORIES:
+None
+
+SUBTASK LIST FORMAT:
+- <Subtask description>
+- <Subtask description>
+...
+
+TASK 1 SUBTASKS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUBTASKER AGENT --------------------------
+- Create the "raytracer" folder
+- Create the "src" folder
+- Create the "include" folder
+- Create the "lib" folder
+- Create the "test" folder
+- Create the "data" folder
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR AGENT =====================
+
+Based on the developer's recent actions, give them advice on their current task.
+Include any the information you think would help them.
+If the developer has done something wrong, let them know.
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+=== PROBLEM 1 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Create a binary calculator program in python.
+
+CURRENT TASK:
+Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
+
+CURRENT SUBTASKS:
+- Write test for BinaryString class
+- Write test for add_two_numbers
+- Write test for subtract_two_numbers
+- Write test for multiply_two_numbers
+- Run the tests
+
+RECENT ACTIONS:
+- I wrote some comments in main.py
+- I wrote the following functions/classes in test_binary_arithmetic.py: test_binary_string(a), test_add_two_numbers(a, b)
+- I wrote the following functions/classes in logging.py: log(message), log_error(message), log_warning(message), log_success(message)
+- I ran the command 'python main.py' and got the following output: "Hello world!"
+- I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
+
+RELEVANT LONG-TERM MEMORIES:
+- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
+- I ran the following command: pip install unittest
+- I installed python and unittest
+
+MESSAGE:
+Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
+and should be in a file called test_binary_arithmetic.py. It should use the unittest module.
+
+=== TRIAL SUCCESS ===
+
+=== PROBLEM 2 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK:
+Create Project Structure:  Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files.
+
+CURRENT SUBTASKS:
+- Create the "raytracer" folder
+- Create the "src" folder
+- Create the "include" folder
+- Create the "lib" folder
+- Create the "test" folder
+- Create the "data" folder
+
+RECENT DEVELOPER ACTIONS AND THOUGHTS:
+
+
+DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
+None
+
+MESSAGE:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR AGENT --------------------------
+You should create the "raytracer" folder, then create the "src", "include", "lib", "test" and "data" folders inside it. You can do this by using the terminal commands "mkdir raytracer" and "mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data".
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create Project Structure:  Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files. (Current task)
+Task 2. Create Vector Class:  Create a Vector class to represent 2D points and vectors. Include functions to retrieve and set the x and y components of the vector, and to perform basic vector math such as addition and scalar multiplication.
+Task 3. Create Ray Class:  Create a Ray class to represent a ray in 2D space. Include functions to retrieve and set the start and end points of the ray, and to calculate the direction of the ray.
+Task 4. Create Raytracer Class:  Create a Raytracer class to represent a 2D raytracer. Include functions to trace a ray, calculate shadows and reflections, and calculate refractions.
+Task 5. Create Tests:  Create tests for all of the above classes to ensure that they are functioning correctly.
+
+CURRENT SUBTASK LIST:
+- Create the "raytracer" folder
+- Create the "src" folder
+- Create the "include" folder
+- Create the "lib" folder
+- Create the "test" folder
+- Create the "data" folder
+
+SUPERVISOR INSTRUCTIONS:
+You should create the "raytracer" folder, then create the "src", "include", "lib", "test" and "data" folders inside it. You can do this by using the terminal commands "mkdir raytracer" and "mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data".
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to create the raytracer folder and the subfolders
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir raytracer
+mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data
+---------------------------------------------------------------------------------------------------------
+I ran the command 'mkdir raytracer
+mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data' and got the following result: 
+
+    Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:29                raytracer                                                                         
+
+
+
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create Project Structure:  Create a folder called "raytracer" and add the necessary sub-folders and files to hold your source code, header files, libraries, and test files. (Current task)
+Task 2. Create Vector Class:  Create a Vector class to represent 2D points and vectors. Include functions to retrieve and set the x and y components of the vector, and to perform basic vector math such as addition and scalar multiplication.
+Task 3. Create Ray Class:  Create a Ray class to represent a ray in 2D space. Include functions to retrieve and set the start and end points of the ray, and to calculate the direction of the ray.
+Task 4. Create Raytracer Class:  Create a Raytracer class to represent a 2D raytracer. Include functions to trace a ray, calculate shadows and reflections, and calculate refractions.
+Task 5. Create Tests:  Create tests for all of the above classes to ensure that they are functioning correctly.
+
+CURRENT SUBTASK LIST:
+- Create the "raytracer" folder
+- Create the "src" folder
+- Create the "include" folder
+- Create the "lib" folder
+- Create the "test" folder
+- Create the "data" folder
+
+SUPERVISOR INSTRUCTIONS:
+You should create the "raytracer" folder, then create the "src", "include", "lib", "test" and "data" folders inside it. You can do this by using the terminal commands "mkdir raytracer" and "mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data".
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to create the raytracer folder and the subfolders
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir raytracer
+mkdir raytracer/src raytracer/include raytracer/lib raytracer/test raytracer/data
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:29                raytracer
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to make sure the folders were created correctly
+>ACTION:
+RUN_TERMINAL_COMMAND:
+ls raytracer
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO PLANNER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions.
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+TASK LIST FORMAT:
+Task 1. <Task name>: <Task description>
+Task 2. <Task name>: <Task description>
+...
+
+FULL TASK LIST:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM PLANNER AGENT --------------------------
+Task 1. Create a folder: Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files: Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code: Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests: Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run: Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows: Add code to implement shadows in the raytracer.
+Task 7. Add Reflections: Add code to implement reflections in the raytracer.
+Task 8. Add Refractions: Add code to implement refractions in the raytracer
+Task 9. Test Again: Test the code again to make sure it works as expected with the new features.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUBTASKER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library". (Current task)
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+CURRENT TASK:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+
+RECENT ACTIONS:
+
+
+RELEVANT LONG-TERM MEMORIES:
+None
+
+SUBTASK LIST FORMAT:
+- <Subtask description>
+- <Subtask description>
+...
+
+TASK 1 SUBTASKS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUBTASKER AGENT --------------------------
+- Open the terminal and navigate to the current directory
+- Use the command "mkdir Raytracing_Library" to create the folder
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR AGENT =====================
+
+Based on the developer's recent actions, give them advice on their current task.
+Include any the information you think would help them.
+If the developer has done something wrong, let them know.
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+=== PROBLEM 1 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Create a binary calculator program in python.
+
+CURRENT TASK:
+Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
+
+CURRENT SUBTASKS:
+- Write test for BinaryString class
+- Write test for add_two_numbers
+- Write test for subtract_two_numbers
+- Write test for multiply_two_numbers
+- Run the tests
+
+RECENT ACTIONS:
+- I wrote some comments in main.py
+- I wrote the following functions/classes in test_binary_arithmetic.py: test_binary_string(a), test_add_two_numbers(a, b)
+- I wrote the following functions/classes in logging.py: log(message), log_error(message), log_warning(message), log_success(message)
+- I ran the command 'python main.py' and got the following output: "Hello world!"
+- I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
+
+RELEVANT LONG-TERM MEMORIES:
+- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
+- I ran the following command: pip install unittest
+- I installed python and unittest
+
+MESSAGE:
+Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
+and should be in a file called test_binary_arithmetic.py. It should use the unittest module.
+
+=== TRIAL SUCCESS ===
+
+=== PROBLEM 2 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK:
+Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+
+CURRENT SUBTASKS:
+- Open the terminal and navigate to the current directory
+- Use the command "mkdir Raytracing_Library" to create the folder
+
+RECENT DEVELOPER ACTIONS AND THOUGHTS:
+
+
+DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
+None
+
+MESSAGE:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR AGENT --------------------------
+Open the terminal and navigate to the current directory. Then, use the command "mkdir Raytracing_Library" to create the folder.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library". (Current task)
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Open the terminal and navigate to the current directory
+- Use the command "mkdir Raytracing_Library" to create the folder
+
+SUPERVISOR INSTRUCTIONS:
+Open the terminal and navigate to the current directory. Then, use the command "mkdir Raytracing_Library" to create the folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+---------------------------------------------------------------------------------------------------------
+I ran the command 'cd' and got the following result(s): Success
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library". (Current task)
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Open the terminal and navigate to the current directory
+- Use the command "mkdir Raytracing_Library" to create the folder
+
+SUPERVISOR INSTRUCTIONS:
+Open the terminal and navigate to the current directory. Then, use the command "mkdir Raytracing_Library" to create the folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+---------------------------------------------------------------------------------------------------------
+I ran the command 'mkdir Raytracing_Library' and got the following result(s): Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library". (Current task)
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Open the terminal and navigate to the current directory
+- Use the command "mkdir Raytracing_Library" to create the folder
+
+SUPERVISOR INSTRUCTIONS:
+Open the terminal and navigate to the current directory. Then, use the command "mkdir Raytracing_Library" to create the folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+The folder has been created. I need to mark the task as complete.
+>ACTION:
+MARK_TASK_COMPLETE:
+success
+---------------------------------------------------------------------------------------------------------
+I marked the task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".' as completed
+===================== CONTEXT SENT TO SUBTASKER AGENT =====================
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. (Current task)
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CONSTRAINTS:
+Final product must have thorough test coverage. Do not use git or any other version control system.
+
+CURRENT TASK:
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+
+RECENT ACTIONS:
+I ran the command 'cd' and got the following result(s): Success
+I ran the command 'mkdir Raytracing_Library' and got the following result(s): Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+I marked the task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".' as completed
+
+RELEVANT LONG-TERM MEMORIES:
+None
+
+SUBTASK LIST FORMAT:
+- <Subtask description>
+- <Subtask description>
+...
+
+TASK 2 SUBTASKS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUBTASKER AGENT --------------------------
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR AGENT =====================
+
+Based on the developer's recent actions, give them advice on their current task.
+Include any the information you think would help them.
+If the developer has done something wrong, let them know.
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+=== PROBLEM 1 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Create a binary calculator program in python.
+
+CURRENT TASK:
+Write arithmetic functions: Write some python functions for doing arithmetic on binary strings.
+
+CURRENT SUBTASKS:
+- Write test for BinaryString class
+- Write test for add_two_numbers
+- Write test for subtract_two_numbers
+- Write test for multiply_two_numbers
+- Run the tests
+
+RECENT ACTIONS:
+- I wrote some comments in main.py
+- I wrote the following functions/classes in test_binary_arithmetic.py: test_binary_string(a), test_add_two_numbers(a, b)
+- I wrote the following functions/classes in logging.py: log(message), log_error(message), log_warning(message), log_success(message)
+- I ran the command 'python main.py' and got the following output: "Hello world!"
+- I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
+
+RELEVANT LONG-TERM MEMORIES:
+- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
+- I ran the following command: pip install unittest
+- I installed python and unittest
+
+MESSAGE:
+Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
+and should be in a file called test_binary_arithmetic.py. It should use the unittest module.
+
+=== TRIAL SUCCESS ===
+
+=== PROBLEM 2 ===
+
+=== TRIAL 1 ===
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CURRENT TASK:
+Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+
+CURRENT SUBTASKS:
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+
+RECENT DEVELOPER ACTIONS AND THOUGHTS:
+I ran the command 'cd' and got the following result(s): Success
+I ran the command 'mkdir Raytracing_Library' and got the following result(s): Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+I marked the task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".' as completed
+
+DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
+None
+
+MESSAGE:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR AGENT --------------------------
+Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. (Current task)
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+
+SUPERVISOR INSTRUCTIONS:
+Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+
+>THOUGHTS:
+
+The folder has been created. I need to mark the task as complete.
+>ACTION:
+MARK_TASK_COMPLETE:
+success
+>ENDACTION
+OUTPUT:
+Finished task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".'
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to create the source files in the Raytracing_Library folder.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd Raytracing_Library
+---------------------------------------------------------------------------------------------------------
+I ran the command 'cd Raytracing_Library' and got the following result(s): Success
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. (Current task)
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+
+SUPERVISOR INSTRUCTIONS:
+Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+
+>THOUGHTS:
+
+The folder has been created. I need to mark the task as complete.
+>ACTION:
+MARK_TASK_COMPLETE:
+success
+>ENDACTION
+OUTPUT:
+Finished task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".'
+
+>THOUGHTS:
+
+I need to create the source files in the Raytracing_Library folder.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd Raytracing_Library
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I need to create the source file called "raytracer.cpp".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+touch raytracer.cpp
+---------------------------------------------------------------------------------------------------------
+I ran the command 'touch raytracer.cpp' and got the following result(s): touch : The term 'touch' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling 
+of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ touch raytracer.cpp
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (touch:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. (Current task)
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+
+SUPERVISOR INSTRUCTIONS:
+Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+
+>THOUGHTS:
+
+The folder has been created. I need to mark the task as complete.
+>ACTION:
+MARK_TASK_COMPLETE:
+success
+>ENDACTION
+OUTPUT:
+Finished task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".'
+
+>THOUGHTS:
+
+I need to create the source files in the Raytracing_Library folder.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd Raytracing_Library
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the source file called "raytracer.cpp".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+touch raytracer.cpp
+>ENDACTION
+OUTPUT:
+touch : The term 'touch' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling 
+of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ touch raytracer.cpp
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (touch:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+It looks like the command 'touch' is not recognized. I should ask my supervisor for help.
+>ACTION:
+ASK_SUPERVISOR:
+What command should I use to create a source file?
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR/ADVISOR AGENT =====================
+
+You are searching through your memories, trying to answer to this question:
+What command should I use to create a source file?
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+MEMORIES:
+I ran the command 'cd' and got the following result(s): Success
+- I ran the command 'mkdir Raytracing_Library' and got the following result(s): Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+- I marked the task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".' as completed
+- I ran the command 'cd Raytracing_Library' and got the following result(s): Success
+- I ran the command 'touch raytracer.cpp' and got the following result(s): touch : The term 'touch' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling 
+of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ touch raytracer.cpp
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (touch:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+Summarize all the information about these memories that might help to answer your question.
+If there are no memories relevant to this question, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
+
+Summary:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR/ADVISOR AGENT --------------------------
+I created a folder called "Raytracing_Library" using the command 'mkdir Raytracing_Library'. I navigated to the Raytracing_Library folder using the command 'cd'. I attempted to create a source file using the command 'touch raytracer.cpp', but this command was not recognized. None of the memories provided answer the question directly, so additional information is needed in order to answer it.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR/ADVISOR AGENT =====================
+
+You are reading your code, trying to answer the following question:
+What command should I use to create a source file?
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+CODE SECTIONS:
+
+
+Summarize all the information about this code that might help to answer the question.
+If there is no code relevant to this question here, write "None".
+If there is anything missing that would be helpful for you to know before answering the question, mention it.
+
+Summary:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR/ADVISOR AGENT --------------------------
+None. It is not necessary to have any code to answer the question. The question can be answered simply by using the command "touch [filename.extension]", where [filename.extension] is the name and file extension of the source file you want to create.
+---------------------------------------------------------------------------------------------------------
+===================== CONTEXT SENT TO SUPERVISOR/ADVISOR AGENT =====================
+
+GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder.
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+My employee has asked me the following question:
+What command should I use to create a source file?
+
+After I gave him the following goal and instructions:
+"C: Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder."
+
+Here is what I remember:
+I created a folder called "Raytracing_Library" using the command 'mkdir Raytracing_Library'. I navigated to the Raytracing_Library folder using the command 'cd'. I attempted to create a source file using the command 'touch raytracer.cpp', but this command was not recognized. None of the memories provided answer the question directly, so additional information is needed in order to answer it.
+
+Here is what I know about each part of my code:
+None. It is not necessary to have any code to answer the question. The question can be answered simply by using the command "touch [filename.extension]", where [filename.extension] is the name and file extension of the source file you want to create.
+
+Here is my answer:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM SUPERVISOR/ADVISOR AGENT --------------------------
+The command you should use to create a source file is 'touch [filename.extension]', where [filename.extension] is the name and file extension of the source file you want to create.
+---------------------------------------------------------------------------------------------------------
+I asked the supervisor the question 'What command should I use to create a source file?' and got the following reply: The command you should use to create a source file is 'touch [filename.extension]', where [filename.extension] is the name and file extension of the source file you want to create.
+===================== CONTEXT SENT TO EXECUTOR AGENT =====================
+
+=== INFO ===
+
+ENVIRONMENT:
+You are an experienced professional developer, on a Ubuntu machine. Use ONLY the actions provided; make directories with terminal commands. Do NOT use an IDE or text editor; use write_file, modify_code and so on instead. Do not research or google anything unless you have to; you have enough coding knowledge not to need to. Try to complete the subtasks one at a time.
+
+AVAILABLE ACTIONS:
+
+GOOGLE:
+<search term>
+>ENDACTION
+OUTPUT:
+{<search result 1>, <search result 2>, ...}
+
+BROWSE:
+<url>
+<question to try and answer when browsing>
+>ENDACTION
+OUTPUT:
+<answer>
+
+RUN_TERMINAL_COMMAND:
+<command>
+>ENDACTION
+OUTPUT:
+<terminal output>
+
+WRITE_FILE:
+<filename>
+<file contents>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+READ_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<file contents>
+
+ADD_TO_FILE:
+<filename>
+<content
+to
+add>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+DELETE_FILE:
+<filename>
+>ENDACTION
+OUTPUT:
+<success/failure>
+
+MODIFY_CODE:
+<filename>
+<what to modify and all
+relevant information>
+>ENDACTION
+OUTPUT:
+<resulting code>
+
+MARK_TASK_COMPLETE:
+<success/failure>
+>ENDACTION
+OUTPUT:
+None
+
+ASK_SUPERVISOR:
+<question to ask omniscient supervisor>
+>ENDACTION
+OUTPUT:
+<supervisor answer>
+
+
+FINAL GOAL:
+Write a 2D raytracing library in C++ for use in 2D platformers, complete with shadows, reflections and refractions
+
+COMPLETE TASK LIST:
+Task 1. Create a folder:  Create a folder in the current directory called "Raytracing_Library".
+Task 2. Create Source files:  Create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. (Current task)
+Task 3. Write Code:  Write the basic code for the raytracing library in the files, including a header file, class declarations and a constructor.
+Task 4. Write Tests:  Write a set of unit tests for the raytracing library.
+Task 5. Compile and Run:  Compile and run the code to make sure it works as expected.
+Task 6. Add Shadows:  Add code to implement shadows in the raytracer.
+Task 7. Add Reflections:  Add code to implement reflections in the raytracer.
+Task 8. Add Refractions:  Add code to implement refractions in the raytracer
+
+CURRENT SUBTASK LIST:
+- Create a source file called "raytracer.cpp" in the "Raytracing_Library" folder
+- Create a header file called "raytracer.h" in the "Raytracing_Library" folder
+
+SUPERVISOR INSTRUCTIONS:
+Now you should create two source files called "raytracer.cpp" and "raytracer.h" in the "Raytracing_Library" folder. You can do this by running the commands 'touch raytracer.cpp' and 'touch raytracer.h' in the "Raytracing_Library" folder.
+
+ACTION EXECUTION SYNTAX:
+"""
+>THOUGHTS:
+thoughts about the last output and reasoning behind your current action
+>ACTION:
+ACTION_NAME:
+arg1
+[arg2]
+>ENDACTION
+"""
+
+After each action, wait for the output. After each output, give your next thoughts and action.
+Ask the Supervisor any questions you have about the codebase or what has been done in the project so far.
+You should complete your subtasks in the order they are given, and make sure to run MARK_TASK_COMPLETE before you move onto the next task.
+
+=== CONTINUING TRIAL 1 ===
+
+>THOUGHTS:I need to open the terminal and navigate to the current directory.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the folder using the command "mkdir Raytracing_Library".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+mkdir Raytracing_Library
+>ENDACTION
+OUTPUT:
+Directory: C:\Users\abk\Documents\git\lazybones\lazybones_workspace
+
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+d-----        19/04/2023     00:34                Raytracing_Library
+
+>THOUGHTS:
+
+The folder has been created. I need to mark the task as complete.
+>ACTION:
+MARK_TASK_COMPLETE:
+success
+>ENDACTION
+OUTPUT:
+Finished task 'Create a folder:  Create a folder in the current directory called "Raytracing_Library".'
+
+>THOUGHTS:
+
+I need to create the source files in the Raytracing_Library folder.
+>ACTION:
+RUN_TERMINAL_COMMAND:
+cd Raytracing_Library
+>ENDACTION
+OUTPUT:
+
+
+>THOUGHTS:
+
+I need to create the source file called "raytracer.cpp".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+touch raytracer.cpp
+>ENDACTION
+OUTPUT:
+touch : The term 'touch' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling 
+of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ touch raytracer.cpp
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (touch:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+>THOUGHTS:
+
+It looks like the command 'touch' is not recognized. I should ask my supervisor for help.
+>ACTION:
+ASK_SUPERVISOR:
+What command should I use to create a source file?
+>ENDACTION
+OUTPUT:
+The command you should use to create a source file is 'touch [filename.extension]', where [filename.extension] is the name and file extension of the source file you want to create.
+
+>THOUGHTS:
+
+===================================================================================================
+------------------------ CONTEXT RETURNED FROM EXECUTOR AGENT --------------------------
+I understand now. I need to create the source file called "raytracer.cpp".
+>ACTION:
+RUN_TERMINAL_COMMAND:
+touch raytracer.cpp
+---------------------------------------------------------------------------------------------------------
