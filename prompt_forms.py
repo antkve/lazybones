@@ -33,11 +33,11 @@ Final product must have thorough test coverage. Do not use git or any other vers
 CURRENT TASK:
 Task {task_number}. {task_name}: {task_description}
 
-RECENT ACTIONS:
-{recent_actions}
-
 RELEVANT LONG-TERM MEMORIES:
 {long_term_memories}
+
+RECENT ACTIONS:
+{recent_actions}
 
 SUBTASK LIST FORMAT:
 - <Subtask description>
@@ -136,6 +136,7 @@ SUPERVISOR_ADVICE_PROMPT_FORM = """
 Based on the developer's recent actions, give them advice on their current task.
 Include any the information you think would help them.
 If the developer has done something wrong, let them know.
+Make sure they stick to their current task, or tell them to mark it as complete if they have finished it.
 
 ENVIRONMENT:
 {environment}
@@ -157,17 +158,17 @@ CURRENT SUBTASKS:
 - Write test for multiply_two_numbers
 - Run the tests
 
-RECENT ACTIONS:
+DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
+- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
+- I ran the following command: pip install unittest
+- I installed python and unittest
+
+RECENT DEVELOPER ACTIONS:
 - I wrote some comments in main.py
 - I wrote the following functions/classes in test_binary_arithmetic.py: test_binary_string(a), test_add_two_numbers(a, b)
 - I wrote the following functions/classes in logging.py: log(message), log_error(message), log_warning(message), log_success(message)
 - I ran the command 'python main.py' and got the following output: "Hello world!"
 - I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
-
-RELEVANT LONG-TERM MEMORIES:
-- I wrote the following functions/classes in binary_arithmetic.py: BinaryString(str) add_two_numbers(a, b), subtract_two_numbers(a, b), multiply_two_numbers(a, b)
-- I ran the following command: pip install unittest
-- I installed python and unittest
 
 MESSAGE:
 Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
@@ -188,11 +189,11 @@ CURRENT TASK:
 CURRENT SUBTASKS:
 {current_subtasks}
 
-RECENT DEVELOPER ACTIONS AND THOUGHTS:
-{recent_actions}
-
 DEVELOPER'S RELEVANT LONG-TERM MEMORIES:
 {long_term_memories}
+
+RECENT DEVELOPER ACTIONS:
+{recent_actions}
 
 MESSAGE:
 """

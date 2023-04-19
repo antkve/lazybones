@@ -2,25 +2,12 @@ import os
 import os.path
 
 # Set a dedicated folder for file I/O
-working_directory = "C://Users/abk/Documents/git/lazybones/lazybones_workspace"
 
-if not os.path.exists(working_directory):
-    os.makedirs(working_directory)
-
-
-def safe_join(base, *paths):
-    new_path = os.path.join(base, *paths)
-    norm_new_path = os.path.normpath(new_path)
-
-    if os.path.commonprefix([base, norm_new_path]) != base:
-        raise ValueError("Attempted to access outside of working directory.")
-
-    return norm_new_path
 
 
 def read_file(filename):
     try:
-        filepath = safe_join(working_directory, filename)
+        filepath = filename
         with open(filepath, "r") as f:
             content = f.read()
         return content
@@ -30,7 +17,7 @@ def read_file(filename):
 
 def write_to_file(filename, text):
     try:
-        filepath = safe_join(working_directory, filename)
+        filepath = filename
         directory = os.path.dirname(filepath)
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -43,7 +30,7 @@ def write_to_file(filename, text):
 
 def delete_file(filename):
     try:
-        filepath = safe_join(working_directory, filename)
+        filepath =filename
         os.remove(filepath)
         return "File deleted successfully."
     except Exception as e:
@@ -53,15 +40,15 @@ def list_files(directory):
     found_files = []
 
     if directory == "" or directory == "/":
-        search_directory = working_directory
+        search_directory = os.getcwd()
     else:
-        search_directory = safe_join(working_directory, directory)
+        search_directory = directory
 
     for root, _, files in os.walk(search_directory):
         for file in files:
             if file.startswith('.'):
                 continue
-            relative_path = os.path.relpath(os.path.join(root, file), working_directory)
+            relative_path = os.path.relpath(os.path.join(root, file), os.getcwd())
             found_files.append(relative_path)
 
     return found_files

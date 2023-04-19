@@ -144,16 +144,30 @@ def main(main_goal, environment="You are an experienced professional developer, 
                     executor_action_arg_1 += "\n" + executor_action_arg_2
                 res = ""
                 for line in executor_action_arg_1.split("\n"):
+                    if line.split(' ')[0] == "cd":
+                        try:
+                            os.chdir(line.split(' ')[1])
+                        except FileNotFoundError:
+                            res += f"cd: {line.split(' ')[1]}: No such file or directory"
+                        break
+                    elif line.split(' ')[0] == "touch":
+                        try:
+                            open(line.split(' ')[1], 'a').close()
+                        except FileNotFoundError:
+                            res += f"touch: cannot touch `{line.split(' ')[1]}`: No such file or directory"
+                        break
                     res += "\n" + run(line) # res = input("Enter command output:")
                 if len(res) > 2000:
                     res = res[:1000] + "..." + res[-1000:]
                 res = res.strip()
-                memory = f"I ran the command '{executor_action_arg_1}' and got the following result(s): {res if res != '' else 'Success'}"
+                memory = f"I ran the command '{executor_action_arg_1}' and got the following result(s):\n{res if res != '' else 'None'}"
             elif executor_action_name == "DO_NOTHING":
                 res = "None"
                 memory = "I did nothing."
             elif executor_action_name == "WRITE_FILE":
                 res = tools.file_operations.write_to_file(executor_action_arg_1, executor_action_arg_2)
+                if executor_action_arg_2 is None:
+                    executor_action_arg_2 = ""
                 new_functions = re.findall("(?:^|\n)def (.*?):\n", executor_action_arg_2, re.DOTALL)
                 new_classes = re.findall("(class .*?):\n", executor_action_arg_2, re.DOTALL)
                 codebase_signatures[executor_action_arg_1] = new_functions + new_classes

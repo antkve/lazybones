@@ -64,7 +64,7 @@ def model_call(
     max_tokens: int = None,
     stop = None,
     suffix: str = None,
-    verbose: bool = True,
+    verbose: bool = False,
     quiet: bool = False,
     model_name_for_verbose: str = None,
 
