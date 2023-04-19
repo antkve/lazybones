@@ -171,8 +171,8 @@ RECENT DEVELOPER ACTIONS:
 - I ran the command 'pip install dotenv' and got the following output: "Successfully installed dotenv-0.19.0"
 
 MESSAGE:
-Now you should write a test for the binary add_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
-and should be in a file called test_binary_arithmetic.py. It should use the unittest module.
+Now you should write a test for the binary subtract_two_numbers function, which you've written in binary_arithmetic.py. The test should include at least 5 test cases,
+and should be in the file test_binary_arithmetic.py. Use the unittest module.
 
 === TRIAL SUCCESS ===
 

@@ -1,2 +1,5 @@
 openai==0.27.2
 orjson==3.8.10
+regex==2023.3.23
+duckduckgo_search
+bs4
